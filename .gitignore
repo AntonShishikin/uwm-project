@@ -1,0 +1,6 @@
+.DS_Store
+
+# Ignore generated dump files
+dumps/*.json
+dumps/*.bin
+dumps/*.dump
