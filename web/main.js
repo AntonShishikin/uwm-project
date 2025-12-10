@@ -1,3 +1,5 @@
+import { assembleAndRun } from "./uvm.js";
+
 const form = document.getElementById("run-form");
 const asmInput = document.getElementById("asm-source");
 const dumpStartInput = document.getElementById("dump-start");
@@ -17,26 +19,13 @@ form.addEventListener("submit", async (event) => {
   submitBtn.disabled = true;
   setStatus("Сборка и выполнение...", false);
 
-  const payload = {
-    source: asmInput.value,
-    dumpStart: dumpStartInput.value,
-    dumpEnd: dumpEndInput.value,
-  };
-
   try {
-    const response = await fetch("/api/run", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+    const dumpStart = parseInt(dumpStartInput.value, 10);
+    const dumpEnd = parseInt(dumpEndInput.value, 10);
 
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw new Error(data.error || "Server error");
-    }
+    const data = await Promise.resolve(
+      assembleAndRun(asmInput.value, dumpStart, dumpEnd)
+    );
 
     renderProgram(data.program);
     renderMemory(data.memory);
@@ -44,9 +33,10 @@ form.addEventListener("submit", async (event) => {
       `Готово. Выведено ${data.memory.length} слов памяти (${data.dumpStart}..${data.dumpEnd}).`
     );
   } catch (err) {
+    console.error(err);
     renderProgram([]);
     renderMemory([]);
-    setStatus(err.message || "Неизвестная ошибка", true);
+    setStatus(err?.message || "Неизвестная ошибка", true);
   } finally {
     submitBtn.disabled = false;
   }

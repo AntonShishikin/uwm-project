@@ -4,3 +4,7 @@
 dumps/*.json
 dumps/*.bin
 dumps/*.dump
+
+# Python cache
+__pycache__/
+*.pyc
