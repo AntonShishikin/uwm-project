@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UVM Web Interface</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <section class="panel">
+        <header>
+          <h1>UVM Web Interface</h1>
+          <p>Соберите и выполните программу прямо в браузере.</p>
+        </header>
+        <form id="run-form" class="form">
+          <label class="field">
+            <span>Код (assembly)</span>
+            <textarea
+              id="asm-source"
+              name="asm"
+              spellcheck="false"
+              rows="18"
+            >; Example program: bit-reverse 9-element vector
+
+; Base address of input vector
+CONST 100, 10
+
+; Base address of output vector
+CONST 200, 11
+
+; Input vector (9 elements)
+CONST 1,   100
+CONST 2,   101
+CONST 3,   102
+CONST 4,   103
+CONST 5,   104
+CONST 6,   105
+CONST 7,   106
+CONST 8,   107
+CONST 9,   108
+
+; Bit-reverse each element
+BITREV 10, 0, 200
+BITREV 10, 1, 201
+BITREV 10, 2, 202
+BITREV 10, 3, 203
+BITREV 10, 4, 204
+BITREV 10, 5, 205
+BITREV 10, 6, 206
+BITREV 10, 7, 207
+BITREV 10, 8, 208</textarea
+            >
+          </label>
+          <div class="field-grid">
+            <label class="field">
+              <span>Dump start</span>
+              <input id="dump-start" type="number" value="0" min="0" />
+            </label>
+            <label class="field">
+              <span>Dump end</span>
+              <input id="dump-end" type="number" value="64" min="1" />
+            </label>
+          </div>
+          <button type="submit">Assemble & Run</button>
+          <p id="status" class="status"></p>
+        </form>
+      </section>
+      <section class="panel results">
+        <div>
+          <h2>Program (IR)</h2>
+          <pre id="program-output"></pre>
+        </div>
+        <div>
+          <h2>Memory dump</h2>
+          <div class="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Address</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody id="memory-output"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
